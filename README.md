@@ -1,5 +1,4 @@
-# LearnReact
-学习 React 笔记
+# 学习 React 笔记
 
 ## 官方教程
 - [React-官方教程](https://zh-hans.reactjs.org/)
@@ -12,11 +11,65 @@
 
 而第一个参数必须有一个子节点，如果不提供可以使用React.Fragments或者`<>...</>`替代。
 
+## 组件
 
-### Hook
+### class组件
+需要从React.Component上继承，有state，和props，有生命周期。
+
+``` js
+class List extends React.Component {
+    constructor(props){
+        super(props)
+    }
+    render(){
+       const {list} = this.props;
+        return 
+        <div>
+            {list.map((item,index)=>{
+               return 
+               <li key={item.id}>
+                  <span>{item.title}</span>
+               </li>
+             })}
+        <div>
+    }
+}
+```
+
+**特点**
+- 有组件实例
+- 有生命周期
+- 有state 和 setState
+
+### 函数组件
+直接写一个函数，接收props（相当于函数参数），
+
+``` js
+
+function List(props){
+    const list = props;
+    reutrn <ul>
+           {list.map((item,index)=>{
+            return <li key={item.id}>
+               {item.title}
+            </li>
+           })}
+     </ul>
+}
+```
+
+**特点**
+- 没有组件实例
+- 没有生命周期
+- 没有state和setState，只有props
+
+
+## Hook
 
 React V16.8新增的特性。
-#### useState
+
+在不实使用Class组件的情况下使用state
+### useState
 
 替代之前的this.setState，每次都有通过前面的setValue方法去设置值
 
@@ -38,7 +91,7 @@ function Example(){
 ```
 
 
-#### useEffect
+### useEffect
 
 替代之前的生命周期，默认每次在视图更新时执行。
 
