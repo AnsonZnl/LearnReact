@@ -13,6 +13,9 @@
 
 ## 组件
 
+- props<object>：组件内接受到的值，可以使用 `componentName.defaultProps = {value: 0}`，设置默认值，需规范props的类型和是否必要时，请使用`prop-type`
+- state<object>：组件内的状态，可以使用`this.setState({value:0})`,改变（覆盖）state，并更新到DOM
+
 ### class组件
 需要从React.Component上继承，有state，和props，有生命周期。
 
@@ -99,13 +102,18 @@ function Example(){
 useEffect(()=>{
     document.title = `You clicked ${count} times`;
 })
-// 相当于 组件挂载和组件更新时的生命周期都会触发它的更新
+// 相当于 组件挂载和组件更新(任何组件)时的生命周期都会触发它的更新
 
 
 useEffect(()=>{
     document.title = `You clicked ${count} times`;
-}, [count])
-// 仅在count更新时，触发一次。
-```
+}, [])
+// 只会在第一次加载时候触发一次
 
+useEffect(()=>{
+    document.title = `You clicked ${count} times`;
+}, [count])
+// 仅在 count 更新时，触发一次。
+```
+具体参考：[React函数式组件值之useEffect()](https://www.cnblogs.com/guanghe/p/14178482.html)
 
