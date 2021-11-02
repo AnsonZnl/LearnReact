@@ -122,7 +122,9 @@ useEffect(()=>{
 
       
            
-## React AP
+## React API
+### React.Fragment
+可以使得组件在不创建额外DOM元素的情况下，让render()方法中返回多个元素            
 ### forwardRef
 React.forwardRed 会创建一个React组件，这个组件可以接受 ref 属性转发到其组件树下的另一个组件中，在以下两个场景时比较有用
 - 转发 refs 到 DOM 组件中
