@@ -50,9 +50,10 @@ function App() {
 
 ReactDOM.render(React.createElement(APP, null), document.getElementById("root"));
 ```
- 
+
  - React.createElement是JSX的语法糖，会把JSX语法转换为虚拟DOM
  - React.render会将虚拟DOM转化为真实的DOM，并挂在指定的元素上
+
 
 ## 事件处理
 
@@ -82,22 +83,251 @@ ReactDOM.render(<MessageBox />, document.getElementById('app'), function () {
 
 ```
 
+
 ## 条件处理
+
+- 通过if-else去判断
+
+``` js
+function Demo(props)  {
+    let dom;
+    if(props.isShow){
+        return <h1>Message!</h1>
+    }else{
+        return <h1></h1>
+    }
+    
+}
+
+ReactDOM.render(<Demo isShow={true}/>, document.getElementById('app'));
+```
+
+- 元素变量
+
+``` js
+class Demo extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { isShow: true };
+    }
+
+    render() {
+        let isShow = this.state.isShow;
+        let button;
+        if (isShow) {
+            button = <div>你好</div>
+        } else {
+            button = <div>世界</div>
+        }
+
+        return (
+            <div>
+                {button}
+                <button onClick={() => this.setState({ isShow: !this.state.isShow })}  >Change</button>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(
+    <Demo />,
+    document.getElementById('app')
+);
+```
+
+- 与运算符 && 
+
+**条件一 && 条件二：条件一为真就展示条件二，条件一位假，就不展示。**
+
+编写一个展示水果数据，没有的时候就不显示。
+
+``` js
+function List(props){
+    let {list} = props
+    return (
+        <div>
+        {list.length !== 0 && <p>{list.toString()}</p>}
+        </div>
+    )
+}
+
+function Demo(props){
+    return (
+        <div>
+          <List list={['苹果','香蕉']}/>
+          <List list={[]}/>
+          <List list={['橘子','凤梨']}/>
+        </div>
+    )
+}
+
+ReactDOM.render(
+    <Demo/>,
+    document.getElementById('app')
+);
+```
+
+- 三目运算符
+
+还用水果列表
+
+``` js
+function List(props){
+    let {list} = props
+    return (
+        <div>
+        {list.length === 0 ? <p>--无数据--</p> : <p>{list.toString()}</p>}
+        </div>
+    )
+}
+
+function Demo(props){
+    return (
+        <div>
+          <List list={['苹果','香蕉']}/>
+          <List list={[]}/>
+          <List list={['橘子','凤梨']}/>
+        </div>
+    )
+}
+
+ReactDOM.render(
+    <Demo/>,
+    document.getElementById('app')
+);
+```
+
+- 阻止组件渲染
+  
+
+判断条件，适当的返回null即可
+``` js
+function List(props){
+    let {list} = props
+    if(list.length === 0){
+        return null
+    }
+    return (
+        <div>
+           <p>{list.toString()}</p>
+        </div>
+    )
+}
+
+function Demo(props){
+    return (
+        <div>
+          <List list={['苹果','香蕉']}/>
+          <List list={[]}/>
+          <List list={['橘子','凤梨']}/>
+        </div>
+    )
+}
+
+ReactDOM.render(
+    <Demo/>,
+    document.getElementById('app')
+);
+```
 
 ## 列表 && Key
 
+可以使用 map 渲染多个列表
+
+key可以帮助React识别哪些元素改变了，比如删除或者添加，给每个元素唯一的标示，一般使用id或者index。
+
+``` js
+function List(props){
+    let {list} = props;
+    return (
+        <div>
+           <h3>水果列表</h3>
+           <ul>{list.map((e,i)=><li key={i}>{e}</li>)}</ul>
+        </div>
+    )
+}
+
+function Demo(props){
+    return (
+        <div>
+          <List list={['苹果','香蕉']}/>
+          <List list={['橘子','凤梨']}/>
+        </div>
+    )
+}
+
+ReactDOM.render(
+    <Demo/>,
+    document.getElementById('app')
+);
+```
+
+
+
 ## 表单
 
-## 状态提升
+受控组件：如input、textarea、select通常维护自己的state，并且根据用户输入进行更新，通过setState更新。
+
+> 在HTML中，标签<input>、<textarea>、<select>的值的改变通常是根据用户输入进行更新。在React中，可变状态通常保存在组件的状态属性中，并且只能使用 setState() 更新，而呈现表单的React组件也控制着在后续用户输入时该表单中发生的情况，以这种由React控制的输入表单元素而改变其值的方式，称为：“受控组件”。
+>
+> ————————————————
+> 原文链接：https://blog.csdn.net/qq_41846861/article/details/86598797
+
+
+
+使用表单和列表编写一个可以添加的表单列表
+
+``` js
+class NameForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { value: '', list: [1,2] };
+    }
+
+    handleChange = (event)=> {
+        this.setState({ value: event.target.value });
+    }
+
+    handleSubmit = (event) => {
+        this.setState({ list: [...this.state.list, this.state.value]})
+        console.log(this.state.list,this.state.value)
+        event.preventDefault();
+    }
+
+    render() {
+        let {list} = this.state
+        return (
+            <div>
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Name:
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>
+                <List list={list} />
+            </div>
+        )
+    }
+}
+
+function List(props) {
+    let list = props.list;
+    // return <p>{list.toString()}</p>
+    return <ul>{list.map((e, i) => { return <li key={i}>{e}</li> })}</ul>
+}
+
+ReactDOM.render(
+    <NameForm />,
+    document.getElementById('app')
+);
+```
+
 
 
 ## 组件
 
 组件的使用直接嵌入组件即可：
-``` js
-
-```
-
 - `props<object>`：组件内接受到的值，可以使用 `componentName.defaultProps = {value: 0}`，设置默认值，需规范props的类型和是否必要时，请使用`prop-type`
 - `state<object>`：组件内的状态，可以使用`this.setState({value:0})`,改变（覆盖）state，并更新到DOM
 
@@ -251,5 +481,7 @@ useEffect(()=>{
 ```
 具体参考：[React函数式组件值之useEffect()](https://www.cnblogs.com/guanghe/p/14178482.html)
 
-            
+
 ### useContext
+
+
