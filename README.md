@@ -330,7 +330,6 @@ ReactDOM.render(
 
 在HTML中，标签<input>、<textarea>、<select>的值的改变通常是根据用户输入进行更新。在React中，可变状态通常保存在组件的状态属性中，并且只能使用 setState() 更新，而呈现表单的React组件也控制着在后续用户输入时该表单中发生的情况，以这种由React控制的输入表单元素而改变其值的方式，称为：“受控组件”。
 
-————————————————
 原文链接：https://blog.csdn.net/qq_41846861/article/details/86598797
 
 
