@@ -20,6 +20,66 @@ React.forwardRed 会创建一个React组件，这个组件可以接受 ref 属�
 - 转发 refs 到 DOM 组件中
 - 在高阶组件中转发 refs
 
+### React.Refs
+
+可以使用这个API访问DOM节点或者在render方法中创建React元素
+
+在不同的组件中使用不同的Ref方法
+
+- 在Class组件中使用React.createRef
+- 在函数组件中使用React.forwardRef（或则useRef）
+- 
+
+编写一个自动聚焦的输入框
+
+- Class Component
+
+``` js
+
+class NameForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.inpRef = React.createRef()
+    }
+    componentDidMount() {
+        this.inpRef.current.focus();
+    }
+    render() {
+        return (
+            <div>
+                <input ref={this.inpRef}></input>
+            </div>
+        )
+    }
+}
+ReactDOM.render(
+    <NameForm />,
+    document.getElementById('app')
+);
+```
+
+- Function Component（Hook）
+
+``` js
+
+function NameForm() {
+    const inpRef = React.useRef(null)
+    React.useEffect(()=>{
+        inpRef.current.focus()
+    },[])
+    return <input ref={inpRef}></input>
+}
+
+ReactDOM.render(
+    <NameForm />,
+    document.getElementById('app')
+);
+```
+
+
+
+
+
 
 ## JSX
 JSX是通过JS编写HTML结构的语法。
@@ -266,12 +326,16 @@ ReactDOM.render(
 
 ## 表单
 
-受控组件：如input、textarea、select通常维护自己的state，并且根据用户输入进行更新，通过setState更新。    
+受控组件：如input、textarea、select通常维护自己的state，并且根据用户输入进行更新，通过setState更新。
 
-在HTML中，标签`<input>、<textarea>、<select>`的值的改变通常是根据用户输入进行更新。在React中，可变状态通常保存在组件的状态属性中，并且只能使用 setState() 更新，而呈现表单的React组件也控制着在后续用户输入时该表单中发生的情况，以这种由React控制的输入表单元素而改变其值的方式，称为：“受控组件”。     
-原文链接：https://blog.csdn.net/qq_41846861/article/details/86598797.
+在HTML中，标签<input>、<textarea>、<select>的值的改变通常是根据用户输入进行更新。在React中，可变状态通常保存在组件的状态属性中，并且只能使用 setState() 更新，而呈现表单的React组件也控制着在后续用户输入时该表单中发生的情况，以这种由React控制的输入表单元素而改变其值的方式，称为：“受控组件”。
 
-使用表单和列表编写一个可以添加的表单列表.   
+————————————————
+原文链接：https://blog.csdn.net/qq_41846861/article/details/86598797
+
+
+
+使用表单和列表编写一个可以添加的表单列表
 
 ``` js
 class NameForm extends React.Component {
@@ -475,10 +539,12 @@ useEffect(()=>{
 }, [count])
 // 仅在 count 更新时，触发一次。
 ```
-          
 具体参考：[React函数式组件值之useEffect()](https://www.cnblogs.com/guanghe/p/14178482.html)
 
-
 ### useContext
+
+
+
+### useRef
 
 
