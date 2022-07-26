@@ -1,4 +1,4 @@
-# 学习 React 笔记
+# 学习 React 笔记 for dev
 
 ## 官方教程
 - [React-官方教程](https://zh-hans.reactjs.org/)
